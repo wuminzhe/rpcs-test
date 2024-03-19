@@ -19,11 +19,11 @@ const latency = async (rpc_url, request_body) => {
   });
 
   http.send(JSON.stringify(request_body));
-  await responsePromise;
+  const result = await responsePromise;
 
   const endTime = performance.now();
   const latency = endTime - startTime;
-  return latency;
+  return { latency, result };
 };
 
 function calculateAverage(numbers) {
@@ -86,16 +86,18 @@ function calculateStandardDeviation(numbers) {
 
 const latency_n = async (rpcUrl, request_body, n) => {
   const latencies = [];
+  const blockNumbers = [];
   for (let i = 0; i < n; i++) {
     const result = await latency(rpcUrl, request_body);
-    latencies.push(result);
+    latencies.push(result.latency);
+    blockNumbers.push(parseInt(JSON.parse(result.result).result, 16));
   }
 
   const average = latencies.reduce((acc, v) => acc + v) / latencies.length;
   const median = calculateMedian(latencies);
   const variance = calculateVariance(latencies);
   const standardDeviation = calculateStandardDeviation(latencies);
-  return { rpcUrl, average, median, standardDeviation };
+  return { rpcUrl, average, median, standardDeviation, blockNumbers };
 };
 
 export const testRpc = async (rpcUrl) => {
@@ -106,7 +108,7 @@ export const testRpc = async (rpcUrl) => {
     id: 1,
   };
 
-  const testCount = 10;
+  const testCount = 20;
 
   try {
     return await latency_n(rpcUrl, request_body, testCount);
@@ -116,6 +118,7 @@ export const testRpc = async (rpcUrl) => {
       average: 0,
       median: 0,
       standardDeviation: 0,
+      blockNumbers: [],
       error,
     };
   }
@@ -129,7 +132,7 @@ export const testRpcs = async (rpcUrls) => {
     id: 1,
   };
 
-  const testCount = 10;
+  const testCount = 20;
 
   let result = await Promise.allSettled(
     rpcUrls.map((rpcUrl) => {

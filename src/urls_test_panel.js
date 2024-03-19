@@ -36,7 +36,7 @@ export const UrlsTestPanel = ({ title, rpcUrls }) => {
   return (
     <section class="antialiased bg-gray-100 text-gray-600 px-4 py-2">
       <div class="flex flex-col justify-center h-full">
-        <div class="w-full max-w-2xl mx-auto bg-white rounded-sm border border-gray-200">
+        <div class="w-full max-w-5xl mx-auto bg-white rounded-sm border border-gray-200">
           <header class="px-5 py-4 border-b border-gray-100">
             <h2 class="font-semibold text-gray-800">{title}</h2>
           </header>
@@ -49,13 +49,16 @@ export const UrlsTestPanel = ({ title, rpcUrls }) => {
                       <div class="font-semibold text-left">Json Rpc Url</div>
                     </th>
                     <th class="p-2 whitespace-nowrap">
-                      <div class="font-semibold text-center">Mean</div>
+                      <div class="font-semibold text-right">blockNumbers</div>
                     </th>
                     <th class="p-2 whitespace-nowrap">
-                      <div class="font-semibold text-center">Median</div>
+                      <div class="font-semibold text-right">Mean</div>
                     </th>
                     <th class="p-2 whitespace-nowrap">
-                      <div class="font-semibold text-center">
+                      <div class="font-semibold text-right">Median</div>
+                    </th>
+                    <th class="p-2 whitespace-nowrap">
+                      <div class="font-semibold text-right">
                         Standard Deviation
                       </div>
                     </th>
@@ -72,10 +75,19 @@ export const UrlsTestPanel = ({ title, rpcUrls }) => {
                         </div>
                       </td>
                       <td class="p-2 whitespace-nowrap">
-                        <div class="text-left text-center">
+                        <div class="text-right">
                           {
                             result.error ?
                               result.error :
+                              [...new Set(result.blockNumbers)].join(", ")
+                          }
+                        </div>
+                      </td>
+                      <td class="p-2 whitespace-nowrap">
+                        <div class="text-right">
+                          {
+                            result.error ?
+                              '' :
                               result.average == 0 ?
                                 'testing' :
                                 `${Math.round(result.average)} ms`
@@ -83,7 +95,7 @@ export const UrlsTestPanel = ({ title, rpcUrls }) => {
                         </div>
                       </td>
                       <td class="p-2 whitespace-nowrap">
-                        <div class="text-left text-center">
+                        <div class="text-right">
                           {
                             result.error ?
                               '' :
@@ -94,7 +106,7 @@ export const UrlsTestPanel = ({ title, rpcUrls }) => {
                         </div>
                       </td>
                       <td class="p-2 whitespace-nowrap">
-                        <div class="text-left text-center">
+                        <div class="text-right">
                           {
                             result.error ?
                               '' :
