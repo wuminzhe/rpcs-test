@@ -1,12 +1,33 @@
 import { testRpcs } from "./test_rpcs.js";
 import { useState, useEffect } from "preact/hooks";
 
+function buildNewResults(oldResults, result) {
+  const newResults = [...oldResults];
+  const index = oldResults.findIndex((r) => r.rpcUrl === result.rpcUrl);
+  oldResults[index] = result;
+  return oldResults;
+}
+
+function emptyResults(rpcUrls) {
+  return rpcUrls.map((rpcUrl) => {
+    return {
+      rpcUrl: rpcUrl,
+      average: 0,
+      median: 0,
+      standardDeviation: 0,
+    };
+  }).sort((a, b) => a.rpcUrl.localeCompare(b.rpcUrl));
+}
+
 export const UrlsTestPanel = ({ title, rpcUrls }) => {
-  const [results, setResults] = useState([]);
+
+  const [results, setResults] = useState(
+    emptyResults(rpcUrls)
+  );
 
   useEffect(() => {
-    testRpcs(rpcUrls).then((results) => {
-      setResults(results.map((result) => result.value));
+    testRpcs(rpcUrls).then((newResults) => {
+      setResults(newResults.map((result) => result.value));
     });
   }, []);
 
@@ -23,7 +44,7 @@ export const UrlsTestPanel = ({ title, rpcUrls }) => {
                 <thead class="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
                   <tr>
                     <th class="p-2 whitespace-nowrap">
-                      <div class="font-semibold text-left">Url</div>
+                      <div class="font-semibold text-left">Json Rpc Url</div>
                     </th>
                     <th class="p-2 whitespace-nowrap">
                       <div class="font-semibold text-center">Mean</div>
@@ -50,17 +71,23 @@ export const UrlsTestPanel = ({ title, rpcUrls }) => {
                       </td>
                       <td class="p-2 whitespace-nowrap">
                         <div class="text-left text-center">
-                          {Math.round(result.average)} ms
+                          {
+                            result.average == 0 ? 'testing' : `${Math.round(result.average)} ms`
+                          }
                         </div>
                       </td>
                       <td class="p-2 whitespace-nowrap">
                         <div class="text-left text-center">
-                          {Math.round(result.median)} ms
+                          {
+                            result.median == 0 ? 'testing' : `${Math.round(result.median)} ms`
+                          }
                         </div>
                       </td>
                       <td class="p-2 whitespace-nowrap">
                         <div class="text-left text-center">
-                          {Math.round(result.standardDeviation)} ms
+                          {
+                            result.standardDeviation == 0 ? 'testing' : `${Math.round(result.standardDeviation)} ms`
+                          }
                         </div>
                       </td>
                     </tr>

@@ -95,8 +95,21 @@ const latency_n = async (rpcUrl, request_body, n) => {
   const median = calculateMedian(latencies);
   const variance = calculateVariance(latencies);
   const standardDeviation = calculateStandardDeviation(latencies);
-  return { rpcUrl, average, median, variance, standardDeviation };
+  return { rpcUrl, average, median, standardDeviation };
 };
+
+export const testRpc = (rpcUrl) => {
+  const request_body = {
+    jsonrpc: "2.0",
+    method: "eth_blockNumber",
+    params: [],
+    id: 1,
+  };
+
+  const testCount = 10;
+
+  return latency_n(rpcUrl, request_body, testCount);
+}
 
 export const testRpcs = (rpcUrls) => {
   const request_body = {
