@@ -16,8 +16,8 @@ const App = () => {
   ];
   return (
     <div class="antialiased bg-gray-100 text-gray-600 flex flex-col justify-center h-screen">
-      <UrlsTestPanel title="DARWINIA" rpcUrls={darwiniaRpcUrls} concurrency="100" />
-      <UrlsTestPanel title="CRAB" rpcUrls={crabRpcUrls} concurrency="100" />
+      <UrlsTestPanel title="DARWINIA" rpcUrls={darwiniaRpcUrls} concurrency="20" />
+      <UrlsTestPanel title="CRAB" rpcUrls={crabRpcUrls} concurrency="20" />
     </div>
   );
 };

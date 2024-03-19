@@ -1,30 +1,4 @@
-const latency = async (rpc_url, request_body) => {
-  const url = new URL(rpc_url);
-  const http = new XMLHttpRequest();
-  http.open("POST", url.href);
-  http.setRequestHeader("Content-Type", "application/json");
 
-  const startTime = performance.now();
-  const responsePromise = new Promise((resolve, reject) => {
-    http.onload = () => {
-      if (http.status === 200) {
-        resolve(http.responseText);
-      } else {
-        reject(new Error(`Response Code: ${http.status}`));
-      }
-    };
-    http.onerror = () => {
-      reject(new Error("Network Error"));
-    };
-  });
-
-  http.send(JSON.stringify(request_body));
-  const result = await responsePromise;
-
-  const endTime = performance.now();
-  const latency = endTime - startTime;
-  return { latency, result };
-};
 
 function calculateAverage(numbers) {
   if (numbers.length === 0) {
@@ -84,9 +58,38 @@ function calculateStandardDeviation(numbers) {
   return standardDeviation;
 }
 
+const latency = async (rpc_url, request_body) => {
+  const url = new URL(rpc_url);
+  const http = new XMLHttpRequest();
+  http.open("POST", url.href);
+  http.setRequestHeader("Content-Type", "application/json");
+
+  const startTime = performance.now();
+  const responsePromise = new Promise((resolve, reject) => {
+    http.onload = () => {
+      if (http.status === 200) {
+        resolve(http.responseText);
+      } else {
+        reject(new Error(`Response Code: ${http.status}`));
+      }
+    };
+    http.onerror = () => {
+      reject("http error");
+    };
+  });
+
+  http.send(JSON.stringify(request_body));
+  const result = await responsePromise;
+
+  const endTime = performance.now();
+  const latency = endTime - startTime;
+  return { latency, result };
+};
+
 const latency_n = async (rpcUrl, request_body, n) => {
   const latencies = [];
   const blockNumbers = [];
+  const errors = [];
 
   const allResult = await Promise.allSettled(Array(n).fill().map(() => latency(rpcUrl, request_body)));
   allResult.forEach((r) => {
@@ -95,19 +98,15 @@ const latency_n = async (rpcUrl, request_body, n) => {
       latencies.push(result.latency);
       blockNumbers.push(parseInt(JSON.parse(result.result).result, 16));
     } else {
-      console.error(r.reason);
+      errors.push(r.reason);
     }
   });
 
-  // for (let i = 0; i < n; i++) {
-  //   const result = await latency(rpcUrl, request_body);
-  //   latencies.push(result.latency);
-  //   blockNumbers.push(parseInt(JSON.parse(result.result).result, 16));
-  // }
+  console.log(errors)
 
   const average = latencies.reduce((acc, v) => acc + v) / latencies.length;
   const median = calculateMedian(latencies);
-  const variance = calculateVariance(latencies);
+  // const variance = calculateVariance(latencies);
   const standardDeviation = calculateStandardDeviation(latencies);
   return { rpcUrl, average, median, standardDeviation, blockNumbers };
 };

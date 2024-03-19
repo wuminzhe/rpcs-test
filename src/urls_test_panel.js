@@ -105,7 +105,7 @@ export const UrlsTestPanel = ({ title, rpcUrls, concurrency }) => {
                         <div class="text-right">
                           {
                             result.error ?
-                              '' :
+                              result.error :
                               result.average == 0 ?
                                 'testing' :
                                 `${Math.round(result.average)} ms`
@@ -116,7 +116,7 @@ export const UrlsTestPanel = ({ title, rpcUrls, concurrency }) => {
                         <div class="text-right">
                           {
                             result.error ?
-                              '' :
+                              result.error :
                               result.median == 0 ?
                                 'testing' :
                                 `${Math.round(result.median)} ms`
@@ -127,7 +127,7 @@ export const UrlsTestPanel = ({ title, rpcUrls, concurrency }) => {
                         <div class="text-right">
                           {
                             result.error ?
-                              '' :
+                              result.error :
                               result.standardDeviation == 0 ?
                                 'testing' :
                                 `${Math.round(result.standardDeviation)} ms`
