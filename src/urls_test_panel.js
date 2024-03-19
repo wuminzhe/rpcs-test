@@ -15,11 +15,12 @@ function emptyResults(rpcUrls) {
       average: 0,
       median: 0,
       standardDeviation: 0,
+      blockNumbers: []
     };
   }).sort((a, b) => a.rpcUrl.localeCompare(b.rpcUrl));
 }
 
-export const UrlsTestPanel = ({ title, rpcUrls }) => {
+export const UrlsTestPanel = ({ title, rpcUrls, concurrency }) => {
 
   const [results, setResults] = useState(
     emptyResults(rpcUrls)
@@ -27,7 +28,7 @@ export const UrlsTestPanel = ({ title, rpcUrls }) => {
 
   useEffect(() => {
     rpcUrls.forEach(rpcUrl => {
-      testRpc(rpcUrl).then((result) => {
+      testRpc(rpcUrl, parseInt(concurrency)).then((result) => {
         setResults((oldResults) => buildNewResults(oldResults, result));
       });
     });
@@ -38,7 +39,7 @@ export const UrlsTestPanel = ({ title, rpcUrls }) => {
       <div class="flex flex-col justify-center h-full">
         <div class="w-full max-w-5xl mx-auto bg-white rounded-sm border border-gray-200">
           <header class="px-5 py-4 border-b border-gray-100">
-            <h2 class="font-semibold text-gray-800">{title}</h2>
+            <h2 class="font-semibold text-gray-800">{title} RPC latency tests({concurrency} concurrent requests)</h2>
           </header>
           <div class="p-3">
             <div class="overflow-x-auto">
@@ -79,8 +80,11 @@ export const UrlsTestPanel = ({ title, rpcUrls }) => {
                           {
                             result.error ?
                               result.error :
-                              [...new Set(result.blockNumbers)].join(", ")
+                              result.blockNumbers.length == 0 ?
+                                'testing' :
+                                `${[...new Set(result.blockNumbers)].join(", ")}(${result.blockNumbers.length} succeeded)`
                           }
+
                         </div>
                       </td>
                       <td class="p-2 whitespace-nowrap">
