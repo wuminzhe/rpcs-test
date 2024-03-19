@@ -111,7 +111,7 @@ export const testRpc = (rpcUrl) => {
   return latency_n(rpcUrl, request_body, testCount);
 }
 
-export const testRpcs = (rpcUrls) => {
+export const testRpcs = async (rpcUrls) => {
   const request_body = {
     jsonrpc: "2.0",
     method: "eth_blockNumber",
@@ -121,9 +121,25 @@ export const testRpcs = (rpcUrls) => {
 
   const testCount = 10;
 
-  return Promise.allSettled(
+  let result = await Promise.allSettled(
     rpcUrls.map((rpcUrl) => {
       return latency_n(rpcUrl, request_body, testCount);
     })
   );
+
+  result = result.map((r, i) => {
+    if (r.status === "fulfilled") {
+      return r.value;
+    } else {
+      return {
+        rpcUrl: rpcUrls[i],
+        average: 0,
+        median: 0,
+        standardDeviation: 0,
+        error: r.reason,
+      };
+    }
+  });
+
+  return result.sort((a, b) => a.rpcUrl.localeCompare(b.rpcUrl))
 };

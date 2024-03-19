@@ -27,7 +27,7 @@ export const UrlsTestPanel = ({ title, rpcUrls }) => {
 
   useEffect(() => {
     testRpcs(rpcUrls).then((newResults) => {
-      setResults(newResults.map((result) => result.value));
+      setResults(newResults);
     });
   }, []);
 
@@ -72,21 +72,33 @@ export const UrlsTestPanel = ({ title, rpcUrls }) => {
                       <td class="p-2 whitespace-nowrap">
                         <div class="text-left text-center">
                           {
-                            result.average == 0 ? 'testing' : `${Math.round(result.average)} ms`
+                            result.error ?
+                              result.error :
+                              result.average == 0 ?
+                                'testing' :
+                                `${Math.round(result.average)} ms`
                           }
                         </div>
                       </td>
                       <td class="p-2 whitespace-nowrap">
                         <div class="text-left text-center">
                           {
-                            result.median == 0 ? 'testing' : `${Math.round(result.median)} ms`
+                            result.error ?
+                              '' :
+                              result.median == 0 ?
+                                'testing' :
+                                `${Math.round(result.median)} ms`
                           }
                         </div>
                       </td>
                       <td class="p-2 whitespace-nowrap">
                         <div class="text-left text-center">
                           {
-                            result.standardDeviation == 0 ? 'testing' : `${Math.round(result.standardDeviation)} ms`
+                            result.error ?
+                              '' :
+                              result.standardDeviation == 0 ?
+                                'testing' :
+                                `${Math.round(result.standardDeviation)} ms`
                           }
                         </div>
                       </td>
