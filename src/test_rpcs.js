@@ -98,7 +98,7 @@ const latency_n = async (rpcUrl, request_body, n) => {
   return { rpcUrl, average, median, standardDeviation };
 };
 
-export const testRpc = (rpcUrl) => {
+export const testRpc = async (rpcUrl) => {
   const request_body = {
     jsonrpc: "2.0",
     method: "eth_blockNumber",
@@ -108,7 +108,17 @@ export const testRpc = (rpcUrl) => {
 
   const testCount = 10;
 
-  return latency_n(rpcUrl, request_body, testCount);
+  try {
+    return await latency_n(rpcUrl, request_body, testCount);
+  } catch (error) {
+    return {
+      rpcUrl,
+      average: 0,
+      median: 0,
+      standardDeviation: 0,
+      error,
+    };
+  }
 }
 
 export const testRpcs = async (rpcUrls) => {
