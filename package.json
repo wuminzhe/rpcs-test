@@ -1,0 +1,32 @@
+{
+  "private": true,
+  "name": "preact-tailwind",
+  "version": "0.0.0",
+  "license": "MIT",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "if-env NODE_ENV=production && npm run -s serve || npm run -s dev",
+    "build": "preact build",
+    "serve": "preact build && preact serve",
+    "dev": "preact watch"
+  },
+  "eslintConfig": {
+    "extends": "eslint-config-synacor"
+  },
+  "eslintIgnore": [
+    "build/*"
+  ],
+  "devDependencies": {
+    "preact-cli": "latest"
+  },
+  "dependencies": {
+    "preact": "latest",
+    "tailwindcss": "1.4.6"
+  },
+  "keywords": [
+    "tailwindcss",
+    "hook",
+    "preact"
+  ],
+  "description": "Plain and straight forward preact + tailwinds template."
+}
