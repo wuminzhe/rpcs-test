@@ -1,11 +1,11 @@
-import { testRpcs } from "./test_rpcs.js";
+import { testRpc } from "./test_rpcs.js";
 import { useState, useEffect } from "preact/hooks";
 
 function buildNewResults(oldResults, result) {
   const newResults = [...oldResults];
   const index = oldResults.findIndex((r) => r.rpcUrl === result.rpcUrl);
-  oldResults[index] = result;
-  return oldResults;
+  newResults[index] = result;
+  return newResults;
 }
 
 function emptyResults(rpcUrls) {
@@ -26,8 +26,10 @@ export const UrlsTestPanel = ({ title, rpcUrls }) => {
   );
 
   useEffect(() => {
-    testRpcs(rpcUrls).then((newResults) => {
-      setResults(newResults);
+    rpcUrls.forEach(rpcUrl => {
+      testRpc(rpcUrl).then((result) => {
+        setResults((oldResults) => buildNewResults(oldResults, result));
+      });
     });
   }, []);
 
