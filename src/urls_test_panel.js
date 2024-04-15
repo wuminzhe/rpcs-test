@@ -39,7 +39,7 @@ export const UrlsTestPanel = ({ title, rpcUrls, concurrency }) => {
       <div class="flex flex-col justify-center h-full">
         <div class="w-full max-w-5xl mx-auto bg-white rounded-sm border border-gray-200">
           <header class="px-5 py-4 border-b border-gray-100">
-            <h2 class="font-semibold text-gray-800">{title} - {concurrency} concurrent requests</h2>
+            <h2 class="font-semibold text-gray-800">{title}</h2>
           </header>
           <div class="p-3">
             <div class="overflow-x-auto">
