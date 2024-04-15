@@ -30,17 +30,22 @@ const App = () => {
   ]
 
   return (
-    <div class="antialiased bg-gray-100 text-gray-600 flex flex-col justify-center h-screen">
+    <div class="antialiased bg-gray-100 text-gray-600 flex flex-col justify-center">
       <UrlsTestPanel title="DARWINIA" rpcUrls={darwiniaRpcUrls} concurrency="20" />
       <UrlsTestPanel title="CRAB" rpcUrls={crabRpcUrls} concurrency="20" />
+      <UrlsTestPanel title="MY DARWINIA RPCS" rpcUrls={myDarwiniaRpcUrls} concurrency="5" />
+      <UrlsTestPanel title="MY CRAB RPCS" rpcUrls={myCrabRpcUrls} concurrency="5" />
       <UrlsTestPanel title="PANGOLIN" rpcUrls={pangolinRpcUrls} concurrency="10" />
       <UrlsTestPanel title="MOONBEAM" rpcUrls={moonbeamRpcUrls} concurrency="20" />
-      <UrlsTestPanel title="MY DARWINIA RPCS" rpcUrls={myDarwiniaRpcUrls} concurrency="2" />
-      <UrlsTestPanel title="MY CRAB RPCS" rpcUrls={myCrabRpcUrls} concurrency="2" />
+      <div class="text-center py-4 pb-6 text-gray-500 text-xs">
+        by Aki Wu, <a href="https://github.com/wuminzhe/rpcs-test" class="text-blue-500">Github</a>
+      </div>
     </div>
   );
 };
 
 if (typeof window !== "undefined") {
+  // set title
+  document.title = "RPCs Test";
   render(<App />, document.body);
 }
