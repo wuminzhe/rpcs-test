@@ -83,7 +83,7 @@ export const UrlsTestPanel = ({ title, rpcUrls, concurrency }) => {
                               result.error :
                               result.blockNumbers.length == 0 ?
                                 'testing' :
-                                result.blockNumbers.length
+                                `${result.blockNumbers.length} / ${concurrency}`
                           }
                         </div>
                       </td>
