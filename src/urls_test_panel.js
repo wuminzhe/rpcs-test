@@ -55,9 +55,9 @@ export const UrlsTestPanel = ({ title, rpcUrls, concurrency }) => {
   }, []);
 
   return (
-    <section class="antialiased bg-gray-100 text-gray-600 px-4 py-2">
-      <div class="flex flex-col justify-center h-full">
-        <div class="w-full max-w-5xl mx-auto bg-white rounded-sm border border-gray-200">
+    <section class="antialiased bg-gray-100 text-gray-600 px-4 py-4 w-full">
+      <div class="flex flex-col justify-center h-full w-full">
+        <div class="w-full mx-auto bg-white rounded-sm border border-gray-200">
           <header class="px-5 py-4 border-b border-gray-100">
             <h2 class="font-semibold text-gray-800">{title}</h2>
           </header>

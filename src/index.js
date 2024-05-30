@@ -77,7 +77,10 @@ const App = () => {
   };
 
   return (
-    <div class="antialiased bg-gray-100 text-gray-600 flex flex-col justify-center">
+    <div class="antialiased bg-gray-100 text-gray-600 flex flex-col justify-center w-3/4 mx-auto">
+      <div class="text-center pt-4">
+        <h1 class="text-4xl font-bold">Public RPC Test Tool</h1>
+      </div>
       <UrlsTestPanel title="MAINNET" rpcUrls={mainnetRpcUrls} concurrency="20" />
       <UrlsTestPanel title="TESTNET" rpcUrls={testnetRpcUrls} concurrency="10" />
       <div class="text-center py-4 pb-6 text-gray-500 text-xs">
@@ -90,5 +93,6 @@ const App = () => {
 if (typeof window !== "undefined") {
   // set title
   document.title = "RPCs Test";
+  document.body.style.backgroundColor = "rgb(247, 250, 252)";
   render(<App />, document.body);
 }
