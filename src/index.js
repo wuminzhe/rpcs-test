@@ -71,7 +71,7 @@ const App = () => {
       chainId: 43
     },
     "https://fraa-flashbox-2871-rpc.a.stagenet.tanssi.network": {
-      name: "Darwinia Tanssi Pangoro",
+      name: "Darwinia Pangoro Tanssi",
       chainId: 45
     },
   };
