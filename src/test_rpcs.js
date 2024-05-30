@@ -143,9 +143,12 @@ export const testRpcs = async (rpcUrls) => {
 
   const testCount = 20;
 
+  const names = Object.keys(rpcUrls);
   let result = await Promise.allSettled(
-    rpcUrls.map((rpcUrl) => {
-      return latency_n(rpcUrl, request_body, testCount);
+    names.map((name) => {
+      const rpcUrl = rpcUrls[name];
+      const l = latency_n(rpcUrl, request_body, testCount);
+      return { name, ...l };
     })
   );
 
@@ -154,7 +157,8 @@ export const testRpcs = async (rpcUrls) => {
       return r.value;
     } else {
       return {
-        rpcUrl: rpcUrls[i],
+        name: names[i],
+        rpcUrl: rpcUrls[names[i]],
         average: 0,
         median: 0,
         standardDeviation: 0,

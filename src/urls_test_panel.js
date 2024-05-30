@@ -2,33 +2,53 @@ import { testRpc } from "./test_rpcs.js";
 import { useState, useEffect } from "preact/hooks";
 
 function buildNewResults(oldResults, result) {
-  const newResults = [...oldResults];
   const index = oldResults.findIndex((r) => r.rpcUrl === result.rpcUrl);
-  newResults[index] = result;
+  const oldResult = oldResults[index];
+
+  const newResults = [...oldResults];
+  newResults[index] = {
+    rpcUrl: result.rpcUrl,
+    name: oldResult.name,
+    chainId: oldResult.chainId,
+    average: result.average,
+    median: result.median,
+    standardDeviation: result.standardDeviation,
+    blockNumbers: result.blockNumbers,
+  };
   return newResults;
 }
 
-function emptyResults(rpcUrls) {
-  return rpcUrls.map((rpcUrl) => {
+// {
+//    "https://rpc.darwinia.network": {
+//       name: "Darwinia",
+//       chainId: 46,
+//    },
+// }
+function buildEmptyResults(rpcUrls) {
+  const urls = Object.keys(rpcUrls);
+  return urls.map((url) => {
     return {
-      rpcUrl: rpcUrl,
+      rpcUrl: url,
+      name: rpcUrls[url].name,
+      chainId: rpcUrls[url].chainId,
       average: 0,
       median: 0,
       standardDeviation: 0,
       blockNumbers: []
     };
-  }).sort((a, b) => a.rpcUrl.localeCompare(b.rpcUrl));
+  })
 }
 
 export const UrlsTestPanel = ({ title, rpcUrls, concurrency }) => {
 
   const [results, setResults] = useState(
-    emptyResults(rpcUrls)
+    buildEmptyResults(rpcUrls)
   );
 
   useEffect(() => {
-    rpcUrls.forEach(rpcUrl => {
-      testRpc(rpcUrl, parseInt(concurrency)).then((result) => {
+    const urls = Object.keys(rpcUrls);
+    urls.forEach(url => {
+      testRpc(url, parseInt(concurrency)).then((result) => {
         setResults((oldResults) => buildNewResults(oldResults, result));
       });
     });
@@ -46,6 +66,12 @@ export const UrlsTestPanel = ({ title, rpcUrls, concurrency }) => {
               <table class="table-auto w-full">
                 <thead class="text-xs font-semibold text-gray-400 bg-gray-50">
                   <tr>
+                    <th class="p-2 whitespace-nowrap">
+                      <div class="font-semibold text-left">ChainId</div>
+                    </th>
+                    <th class="p-2 whitespace-nowrap">
+                      <div class="font-semibold text-left">Network</div>
+                    </th>
                     <th class="p-2 whitespace-nowrap">
                       <div class="font-semibold text-left">Json Rpc Url</div>
                     </th>
@@ -72,6 +98,20 @@ export const UrlsTestPanel = ({ title, rpcUrls, concurrency }) => {
                       <td class="p-2 whitespace-nowrap">
                         <div class="flex items-center">
                           <div class="font-medium text-gray-800">
+                            {result.chainId}
+                          </div>
+                        </div>
+                      </td>
+                      <td class="p-2 whitespace-nowrap">
+                        <div class="flex items-center">
+                          <div class="font-medium text-gray-800">
+                            {result.name}
+                          </div>
+                        </div>
+                      </td>
+                      <td class="p-2 whitespace-nowrap">
+                        <div class="flex items-center">
+                          <div class="font-medium text-gray-800">
                             {result.rpcUrl}
                           </div>
                         </div>
@@ -79,11 +119,17 @@ export const UrlsTestPanel = ({ title, rpcUrls, concurrency }) => {
                       <td class="p-2 whitespace-nowrap">
                         <div class="text-right">
                           {
-                            result.error ?
-                              result.error :
-                              result.blockNumbers.length == 0 ?
-                                'testing' :
-                                `${result.blockNumbers.length} / ${concurrency}`
+                            (() => {
+                              if (result.error) {
+                                return result.error;
+                              } else if (result.blockNumbers.length === 0) {
+                                return 'testing';
+                              } else if ((result.blockNumbers.length / concurrency) < 1) {
+                                return <span style={{ backgroundColor: 'red', color: 'yellow' }}> {result.blockNumbers.length}/{concurrency} </span>;
+                              } else {
+                                return `${result.blockNumbers.length}/${concurrency}`;
+                              }
+                            })()
                           }
                         </div>
                       </td>
