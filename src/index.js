@@ -69,7 +69,11 @@ const App = () => {
     "https://pangolin-rpc.darwinia.network": {
       name: "Darwinia Pangolin",
       chainId: 43
-    }
+    },
+    "https://fraa-flashbox-2871-rpc.a.stagenet.tanssi.network": {
+      name: "Darwinia Tanssi Pangoro",
+      chainId: 45
+    },
   };
 
   return (
