@@ -66,9 +66,9 @@ const App = () => {
     }
   };
   const testnetRpcUrls = {
-    "https://pangolin-rpc.darwinia.network": {
-      name: "Darwinia Pangolin",
-      chainId: 43
+    "https://koi-rpc.darwinia.network": {
+      name: "Darwinia Koi",
+      chainId: 701
     },
     "https://fraa-flashbox-2871-rpc.a.stagenet.tanssi.network": {
       name: "Darwinia Pangoro Tanssi",
