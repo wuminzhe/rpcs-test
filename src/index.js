@@ -40,19 +40,11 @@ const App = () => {
       name: "Darwinia",
       chainId: 46
     },
-    "https://cors.kahub.in/http://38.242.135.236:6644": {
-      name: "Darwinia",
-      chainId: 46
-    },
     "https://crab-rpc.darwinia.network": {
       name: "Darwinia Crab",
       chainId: 44
     },
     "https://crab-rpc.darwiniacommunitydao.xyz": {
-      name: "Darwinia Crab",
-      chainId: 44
-    },
-    "https://cors.kahub.in/http://38.242.135.236:9944": {
       name: "Darwinia Crab",
       chainId: 44
     },
