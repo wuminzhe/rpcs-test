@@ -36,7 +36,7 @@ const App = () => {
       name: "Darwinia",
       chainId: 46
     },
-    "https://darwinia-rpc.darwiniacommunitydao.xyz": {
+    "https://darwinia-rpc.dcdao.box": {
       name: "Darwinia",
       chainId: 46
     },
@@ -44,7 +44,7 @@ const App = () => {
       name: "Darwinia Crab",
       chainId: 44
     },
-    "https://crab-rpc.darwiniacommunitydao.xyz": {
+    "https://crab-rpc.dcdao.box": {
       name: "Darwinia Crab",
       chainId: 44
     },
